@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imtiaz Pro Ultra - Link Edition</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --primary: linear-gradient(135deg, #6366f1, #a855f7); 
+            --accent: #f43f5e;
+            --bg: #0f172a; 
+            --card-bg: rgba(30, 41, 59, 0.7);
+        }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 0% 0%, #1e1b4b 0%, transparent 50%),
+                              radial-gradient(circle at 100% 100%, #312e81 0%, transparent 50%);
+            margin: 0; 
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Fixed Navigation */
+        .nav-bar { 
+            position: fixed; top: 0; left: 0; right: 0; 
+            background: rgba(15, 23, 42, 0.9); 
+            backdrop-filter: blur(15px);
+            padding: 15px 20px; 
+            display: flex; align-items: center; 
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Back Button Fixed */
+        .back-btn { 
+            background: var(--primary); 
+            color: white; 
+            padding: 10px 20px;
+            border-radius: 12px; 
+            display: flex; align-items: center; 
+            gap: 10px;
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 800;
+            border: none;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            transition: 0.3s ease;
+        }
+        .back-btn:active { transform: scale(0.95); }
+
+        /* Dashboard Grid */
+        .dashboard { 
+            display: grid; grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; padding: 25px; margin-top: 100px; 
+        }
+        .app-card { 
+            background: var(--card-bg); 
+            padding: 25px 10px; 
+            border-radius: 24px; 
+            text-align: center; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .app-card:active { transform: translateY(5px); }
+        .app-img { width: 55px; height: 55px; margin-bottom: 12px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); }
+        .app-name { font-weight: 800; font-size: 14px; }
+
+        /* Screen Management */
+        .screen { 
+            position: fixed; inset: 0; background: var(--bg); 
+            z-index: 900; display: none; padding-top: 95px; 
+            overflow-y: auto;
+        }
+        .screen.active { display: block; animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        /* Calculator */
+        .calc-box { max-width: 320px; margin: 0 auto; background: #000; padding: 25px; border-radius: 30px; border: 2px solid #334155; }
+        .calc-screen { color: #10b981; text-align: right; font-size: 40px; font-family: monospace; margin-bottom: 20px; text-shadow: 0 0 10px #10b981; min-height: 50px; }
+        .k-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .key { background: #1e293b; color: white; padding: 18px; border-radius: 15px; text-align: center; font-weight: 800; cursor: pointer; }
+        .key-op { background: #4f46e5; }
+        .key-ac { background: var(--accent); }
+
+        /* Login */
+        #login-scr { position: fixed; inset: 0; background: #000; z-index: 2000; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: #1e293b; padding: 40px; border-radius: 30px; text-align: center; width: 85%; border: 1px solid #6366f1; }
+        input { width: 100%; padding: 15px; border-radius: 12px; border: none; background: #0f172a; color: white; margin-bottom: 20px; outline: none; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+<div id="login-scr">
+    <div class="login-box">
+        <h1 style="color: #818cf8;">Imtiaz Ali Pro</h1>
+        <input type="text" id="userName" placeholder="Enter Your Name">
+        <button onclick="login()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:12px; font-weight:800; cursor:pointer;">Launch App</button>
+    </div>
+</div>
+
+<div style="padding:30px 25px 5px">
+    <h2 id="welcome" style="margin:0; font-weight:800;">Hello!</h2>
+    <p style="opacity:0.6; margin:5px 0;">Premium 3D Dashboard</p>
+</div>
+
+<div class="dashboard">
+    <!-- Summary Button with External Link -->
+    <div class="app-card" onclick="window.open('https://harlequin-gaby-57.tiiny.site', '_blank')">
+        <img src="https://cdn-icons-png.flaticon.com/512/3590/3590082.png" class="app-img">
+        <div class="app-name">Summary</div>
+    </div>
+    <div class="app-card" onclick="show('calc')">
+        <img src="https://cdn-icons-png.flaticon.com/512/9148/9148306.png" class="app-img">
+        <div class="app-name">Calculator</div>
+    </div>
+    <div class="app-card" onclick="show('vault')">
+        <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" class="app-img">
+        <div class="app-name">Vault</div>
+    </div>
+    <div class="app-card" onclick="show('notes')">
+        <img src="https://cdn-icons-png.flaticon.com/512/4207/4207253.png" class="app-img">
+        <div class="app-name">Notes</div>
+    </div>
+</div>
+
+<!-- CALCULATOR SCREEN -->
+<div id="calc" class="screen">
+    <div class="nav-bar"><button class="back-btn" onclick="hide()"><span>?</span> Back</button></div>
+    <div style="padding:20px">
+        <div class="calc-box">
+            <div class="calc-screen" id="disp">0</div>
+            <div class="k-grid">
+                <div class="key key-ac" onclick="clr()">AC</div><div class="key" onclick="del()">?</div><div class="key key-op" onclick="ins('/')">÷</div><div class="key key-op" onclick="ins('*')">×</div>
+                <div class="key" onclick="ins('7')">7</div><div class="key" onclick="ins('8')">8</div><div class="key" onclick="ins('9')">9</div><div class="key key-op" onclick="ins('-')">-</div>
+                <div class="key" onclick="ins('4')">4</div><div class="key" onclick="ins('5')">5</div><div class="key" onclick="ins('6')">6</div><div class="key key-op" onclick="ins('+')">+</div>
+                <div class="key" onclick="ins('1')">1</div><div class="key" onclick="ins('2')">2</div><div class="key" onclick="ins('3')">3</div><div class="key key-op" onclick="run()" style="grid-row:span 2; display:flex; align-items:center; justify-content:center">=</div>
+                <div class="key" style="grid-column:span 2" onclick="ins('0')">0</div><div class="key" onclick="ins('.')">.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VAULT SCREEN -->
+<div id="vault" class="screen">
+    <div class="nav-bar"><button class="back-btn" onclick="hide()"><span>?</span> Back</button></div>
+    <div style="padding:20px">
+        <button onclick="document.getElementById('f').click()" style="width:100%; padding:20px; border-radius:15px; background:var(--primary); color:white; border:none; font-weight:800; margin-bottom:20px;">Upload to Vault</button>
+        <input type="file" id="f" hidden onchange="saveImg(event)">
+        <div id="gallery" style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;"></div>
+    </div>
+</div>
+
+<!-- NOTES SCREEN -->
+<div id="notes" class="screen">
+    <div class="nav-bar"><button class="back-btn" onclick="hide()"><span>?</span> Back</button></div>
+    <textarea id="txt" oninput="saveNotes()" style="width:100%; height:80vh; background:transparent; color:white; border:none; padding:25px; box-sizing:border-box; font-size:18px; outline:none;" placeholder="Start writing notes..."></textarea>
+</div>
+
+<script>
+    // App Logic
+    window.onload = () => {
+        const u = localStorage.getItem('u');
+        if(u) {
+            document.getElementById('login-scr').style.display = 'none';
+            document.getElementById('welcome').innerText = "Hi, " + u;
+        }
+        document.getElementById('txt').value = localStorage.getItem('n') || '';
+        loadGallery();
+    };
+
+    function login() {
+        const n = document.getElementById('userName').value;
+        if(n) { localStorage.setItem('u', n); location.reload(); }
+    }
+
+    function show(id) { document.getElementById(id).classList.add('active'); }
+    function hide() { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); }
+
+    // Calc Logic
+    let exp = "0";
+    function upd() { document.getElementById('disp').innerText = exp; }
+    function ins(v) { if(exp==="0") exp=""; exp+=v; upd(); }
+    function clr() { exp="0"; upd(); }
+    function del() { exp = exp.slice(0,-1) || "0"; upd(); }
+    function run() { try { exp = eval(exp).toString(); upd(); } catch { exp="Error"; upd(); exp="0"; } }
+
+    // Vault Logic
+    function saveImg(e) {
+        const r = new FileReader();
+        r.onload = () => {
+            let imgs = JSON.parse(localStorage.getItem('imgs') || '[]');
+            imgs.unshift(r.result);
+            localStorage.setItem('imgs', JSON.stringify(imgs));
+            loadGallery();
+        };
+        r.readAsDataURL(e.target.files[0]);
+    }
+    function loadGallery() {
+        const imgs = JSON.parse(localStorage.getItem('imgs') || '[]');
+        const gal = document.getElementById('gallery');
+        if(gal) gal.innerHTML = imgs.map(i => `<img src="${i}" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px;">`).join('');
+    }
+
+    function saveNotes() { localStorage.setItem('n', document.getElementById('txt').value); }
+</script>
+</body>
+</html>
